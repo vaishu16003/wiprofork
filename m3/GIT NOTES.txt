@@ -1,0 +1,425 @@
+GIT Notes
+
+GIT  -- Distributed Version Control Tool
+
+Why?
+1) Free
+2) Opensource
+3) Branching is very easy
+4) scalable
+
+Accessed via 
+1) CLI -- GIT BASH  -- preferred
+2)  Integrate with IDE(eclipse)
+
+GITHUB -- create and manage your repositories in web
+
+2 type repository
+1) Local repo
+2) Remote repo
+
+-------------------------------------
+Steps to be done 
+
+1) Create an account in github (web)
+2) Create a repository github web
+3) create a folder inyour m/c (mygitfold)
+4) Redirect to the above folder in git bash
+    cd d:
+    cd wipro/mygitfold
+5) initialise this folder as git folder    -- git init
+6) initialize with the basic configrations
+     git config --global user.name "Deeps"
+    git config --global user.email deep@gmail.com
+    git config --global core.editor code
+    code     -- test whether the editor is enabled for git or not
+    git config --list
+
+7) Clone the remote repo with your local machine
+     git clone 
+
+
+Workflow of GIT
+1) Code in the working directory(project folder)
+2) Make it available to staging area
+3) Make the code available in the local repo
+4) Make the code available in the remote repo
+
+-----------------------------------------
+Adding a file
+
+echo Good Morning > file1.txt 	-- create a content
+git status
+git add file1.txt		-- move the change to staging area(SA)
+git status
+git commit -m "First Commit"	-- make the changes permanent
+			-- move the change from SA to Local REPO(LR)
+
+------------------------------------------
+Editing the file
+
+open the file manually, Added everyone 
+Good Morning Everyone
+git status
+git add file1.txt		-- move the change to staging area(SA)
+git status
+git commit -m "Added Everyone"
+
+--------------------------------------------
+Creating on more file
+
+echo Good Afternoon > file2.txt 	-- create a content
+git status
+git add file2.txt		-- move the change to staging area(SA)
+git status
+git commit -m "Created file2.txt"
+
+------------------------------------------
+Rename a file
+mv file1.txt File1.java
+git status
+ git add .
+ git status
+git commit -m "Renamed file1.txt to File1.java"
+
+----------------------------------------------- 
+Change the content to java code in File1.java
+import java.lang.*;
+
+public class File1
+{
+	public static void main(String[] args){
+	 System.out.println("First Java");
+	}
+}
+
+git status
+ git add .
+ git commit -m "Added Java Code"
+
+--------------------------------------------------------
+Admin@Disney MINGW64 /d/A wipro/mygitfold/wiprorepo (main)
+$ echo doing logging now....>> mylogfile.txt
+
+git status
+  
+Result
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        mylogfile.txt
+
+open .gitignore file, add   *.txt. save
+
+git status
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   .gitignore
+
+$ git add .
+$ git commit -m "Modified .gitignore"
+
+--------------------------------------------------------------------------------------------
+
+Before making the changes to the remote repos, from the local repo, ensure that the working tree is clean
+
+git push
+
+refresh the remote repo page.Observe the files in the local repo are available in the remote repos.
+
+------------------------------------------------------------------------
+
+Make some changes in the remote repo 
+
+git fetch
+
+open the File1.java, observe the changes. Changes in the remote repo shd not be reflected
+
+git merge
+open the File1.java, observe the changes. Changes in the remote repo shd be reflected
+
+-----------------------------------------------------------------------
+Make some changes in the remote repo 
+
+git pull
+
+open the File1.java, observe the changes. Changes in the remote repo shd be reflected
+
+pull = fetch +merge
+
+----------------------------------------------------------------------
+
+git log                                  	-- Detailed info commit id , author, date, commit messge. Last commit first
+git log --oneline     		-- oneline info
+git log -p			-- Complete info about the change. Changes will also be visible
+git log --author=deeps@gmail.com -- display all commits done by the author
+git log --since=2024-05-15 --until=2024-05-16
+git log -- reverse   		-- display in a chronological order. First commit first
+git log --pretty='format:%C(auto)%h (%s, %ad)'
+
+https://git-scm.com/docs/pretty-formats
+
+------------------------------------------------------------------------
+Branching
+Create branches
+
+ git branch deep_branch
+  git branch priya_branch
+
+
+List all branches
+  git branch -l
+
+Switch to a branch
+  git checkout deep_branch
+  git checkout priya_branch
+------------------------------------
+Admin@Disney MINGW64 /d/A wipro/mygitfold/wiprorepo (priya_branch)
+$ git checkout deep_branch
+
+Admin@Disney MINGW64 /d/A wipro/mygitfold/wiprorepo (deep_branch)
+$ ls -l
+total 4
+-rw-r--r-- 1 Admin 197121 414 May 16 13:56 File1.class
+-rw-r--r-- 1 Admin 197121 198 May 16 14:38 File1.java
+-rw-r--r-- 1 Admin 197121  38 May 16 12:04  README.md
+drwxr-xr-x 1 Admin 197121   0 May 16 14:00 logs/
+-rw-r--r-- 1 Admin 197121  22 May 16 14:07 mylogfile.txt
+
+Admin@Disney MINGW64 /d/A wipro/mygitfold/wiprorepo (deep_branch)
+$ git checkout priya_branch
+Admin@Disney MINGW64 /d/A wipro/mygitfold/wiprorepo (priya_branch)
+$ ls -l
+
+-------------------------------------
+git checkout deep_branch
+echo from deep_branch > f1.txt
+git add .
+git commit -m "f1.txt created in deep_branch"
+
+
+git checkout priya_branch
+git ls-files
+
+Observe that the f1.txt created by deep_branch is not visible in priya_branch
+
+
+-----------------------------------------
+
+git checkout deep_branch
+echo from deep_branch > f1.txt
+git add .
+git commit -m "f1.txt created in deep_branch"
+git ls-files
+
+
+switch to main branch
+git checkout main
+git ls-files   ---- f1.txt wont be visible
+git merge deep_branch
+git ls-files    ---- f1.txt SHOULD be visible
+
+----------------------------------------------
+main branch of LR is in sync with main branch of RR. But the deep_branch and priya_branch is not in sync with RR.
+
+ git checkout deep_branch
+ cat File1.java
+ git merge main
+ cat File1.java
+
+
+ git checkout priya_branch
+ git ls-files
+ cat File1.java
+ git merge main
+ cat File1.java
+
+All the branch have the same content as it is in RR.
+
+--------------------------
+git branch -a   -- it displays all the branches from both LR and RR
+
+
+To make the branch created in LL, to the RR
+  git push origin deep_branch
+
+----------------------------
+From main br, edit the code, add() added
+vim File1.java
+
+import java.lang.*;
+
+public class File1
+{
+	int x=1000;
+	int y=200;
+
+	public void add(){
+	     System.out.println(x+y);
+	}
+	public static void main(String[] args){
+	 System.out.println("First Java");
+	 System.out.println("My Second Line of Code"); 		
+	}
+}
+
+git add .
+ git commit -m "add() added"
+ git push
+
+---
+Do sync
+
+git checkout deep_branch
+ git merge main
+ cat File1.java
+
+
+git checkout priya_branch
+git merge main
+ cat File1.java
+
+Observe the code in the RR. main br in RR will be in sync. But deep_branch will not be in sync. For this ?
+
+git push origin deep_branch
+Observe the code in the RR under deep_branch.  Now everything is in sync
+
+------
+PULL Request? 
+
+Merging the contents of other  branchs in the RR together
+
+git checkout deep_branch
+ git status
+   
+
+vim File1.java     ---open File1.java instantiate the class and call add()   --- manually edit
+git add .
+git commit -m "class instantiated and add() called"
+git push origin deep_branch
+
+Priya is making her branch available in RR
+git push origin priya_branch
+
+
+IN RR
+main branch -- managed by TL
+
+From main branch  --- click PULL REQUEST
+compare and pull request
+TL will go to "Files changed" tab, and do "code review"
+Click Review Changes and add some comments
+
+Merge Pull Request
+Confirm merge
+
+----------------------------------------------------------------------
+
+Staging area a.k.a index
+
+
+--------------------------------------------------------------
+
+Reset  Vs Revert  
+
+-- used to undo the changes
+Reset will work if the changes are in LL
+Revert will work if the changes are in RR
+
+
+echo First File > first.txt
+echo Second File > second.txt
+ git add .
+ git commit -m "created first.txt and second.txt"
+
+ vim first.txt
+ git add .
+ git commit -m "change1 in first.txt"
+
+
+ vim second.txt
+ git add .
+ git commit -m "change2 in second.txt"
+
+
+$ git log --oneline
+70156ce (HEAD -> main) change2 in second.txt
+85c0591 change1 in first.txt
+33f73f6 created first.txt and second.txt
+
+The last change/commit shd not happen. (70156ce commitid shd be removed)
+git reset --hard Head~1
+
+Observe the log 
+$ git log --oneline
+85c0591 (HEAD -> main) change1 in first.txt
+33f73f6 created first.txt and second.txt
+
+vi second.txt    -- observe the change2 is removed
+
+ git revert 70156ce
+ vi second.txt
+git log --oneline
+git push
+git revert 70156ce
+ git log --oneline
+
+
+$ vi second.txt
+ git status
+ git add .
+git commit -m "Change 3 in second.txt"
+
+vi second.txt
+ git add .
+git commit -m "Change 4 in second.txt"
+git log --oneline
+ git revert 70156ce
+
+ vi second.txt
+ git status
+ git add .
+ git commit -m "Fixed the merge conflict for change2 in second.txt"
+
+git log --oneline
+ git push
+git log --oneline
+
+
+
+
+
+
+
+
+
+
+
+
+----------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
